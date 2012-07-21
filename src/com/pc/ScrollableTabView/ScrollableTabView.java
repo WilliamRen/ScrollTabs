@@ -67,6 +67,8 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
         mDividerMarginTop = (int) (getResources().getDisplayMetrics().density * mDividerMarginTop);
         mDividerWidth = (int) (getResources().getDisplayMetrics().density * mDividerWidth);
 
+        if (mDividerWidth == 0) mDividerWidth = 1;
+
         mTabs = new ArrayList<TextView>();
     }
 
@@ -110,7 +112,7 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
             final int index = i;
 
             TextView tab = mTabAdapter.getView(i, LayoutInflater.from(mContext));
-            tab.setText(mTabAdapter.getTitle(i));
+            tab.setText(mTabAdapter.getTitle(i).toUpperCase());
 
             mContentView.addView(tab);
 
