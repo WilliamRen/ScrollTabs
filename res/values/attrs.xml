@@ -1,0 +1,9 @@
+<resources>
+
+    <declare-styleable name="ScrollTabs">
+
+        <attr name="pcScrollTabStyle" format="reference" />
+
+    </declare-styleable>
+
+</resources>
