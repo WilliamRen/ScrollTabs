@@ -23,6 +23,8 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     private int mSeparatorColor;
 
+    private boolean mShowSeparator;
+
     private int mDividerMarginTop = 12;
     private int mDividerMarginBottom = 12;
     private int mDividerWidth = 1;
@@ -56,6 +58,8 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
         mContentView = new LinearLayout(context);
 
+        mShowSeparator = true;
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -76,8 +80,7 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     public void setTabAdapter(TabAdapter tabAdapter) {
         mTabAdapter = tabAdapter;
-
-        if (mTabAdapter != null && mPager != null) initTabs();
+        initTabs();
     }
 
     public TabAdapter getTabAdapter() {
@@ -86,8 +89,7 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     public void setViewPager(ViewPager viewPager) {
         mPager = viewPager;
-
-        if (mTabAdapter != null && mPager != null) initTabs();
+        initTabs();
     }
 
     public ViewPager getViewPager() {
@@ -96,10 +98,20 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     public void setSeparatorColor(int separatorColor) {
         mSeparatorColor = separatorColor;
+        initTabs();
     }
 
     public int getSeparatorColor() {
         return mSeparatorColor;
+    }
+
+    public void setShowSeparator(boolean showSeparator) {
+        mShowSeparator = showSeparator;
+        initTabs();
+    }
+
+    public boolean isShowingSeparator() {
+        return mShowSeparator;
     }
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener pageChangeListener) {
@@ -119,6 +131,8 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
     }
 
     private void initTabs() {
+        if (mPager == null || mTabAdapter == null) return;
+
         mPager.setOnPageChangeListener(this);
 
         mContentView.removeAllViews();
@@ -140,7 +154,7 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
             mTabs.add(tab);
 
-            if (i != mPager.getAdapter().getCount() - 1) mContentView.addView(getSeparator());
+            if (mShowSeparator == true && i != mPager.getAdapter().getCount() - 1) mContentView.addView(getSeparator());
 
             tab.setOnClickListener(new OnClickListener() {
                 @Override
@@ -174,14 +188,15 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     private void selectTab(int position) {
         int lastSelectedIndex = -1;
-        for (int i = 0, pos = 0; i < mContentView.getChildCount(); i += 2, pos++) {
+        int factor = mShowSeparator == true ? 2 : 1;
+        for (int i = 0, pos = 0; i < mContentView.getChildCount(); i += factor, pos++) {
             View tab = mContentView.getChildAt(i);
             if (tab.isSelected() == true)
                 lastSelectedIndex = pos;
             tab.setSelected(pos == position);
         }
 
-        int selectedIndex = position * 2;
+        int selectedIndex = position * factor;
 
         View selectedTab = mContentView.getChildAt(selectedIndex);
 
