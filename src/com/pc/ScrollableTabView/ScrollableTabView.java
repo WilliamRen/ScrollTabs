@@ -30,6 +30,7 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
     private ArrayList<TabView> mTabs;
 
     private ViewPager.OnPageChangeListener mPageChangeListener;
+    private TabListener mTabListener;
 
     public ScrollableTabView(Context context) {
         super(context);
@@ -105,6 +106,18 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
         mPageChangeListener = pageChangeListener;
     }
 
+    public ViewPager.OnPageChangeListener getOnPageChangeListener() {
+        return mPageChangeListener;
+    }
+
+    public void setTabListener(TabListener tabListener) {
+        mTabListener = tabListener;
+    }
+
+    public TabListener getTabListener() {
+        return mTabListener;
+    }
+
     private void initTabs() {
         mPager.setOnPageChangeListener(this);
 
@@ -132,8 +145,12 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
             tab.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mPager.getCurrentItem() == index) selectTab(index);
-                    else mPager.setCurrentItem(index, true);
+                    if (mPager.getCurrentItem() == index) {
+                        if (mTabListener != null) mTabListener.onTabReselected(mTabs.get(index), index);
+                    } else {
+                        mPager.setCurrentItem(index, true);
+                        if (mTabListener != null) mTabListener.onTabSelected(mTabs.get(index), index);
+                    }
                 }
             });
         }
@@ -156,12 +173,23 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
     }
 
     private void selectTab(int position) {
+        int lastSelectedIndex = -1;
         for (int i = 0, pos = 0; i < mContentView.getChildCount(); i += 2, pos++) {
             View tab = mContentView.getChildAt(i);
+            if (tab.isSelected() == true)
+                lastSelectedIndex = pos;
             tab.setSelected(pos == position);
         }
 
-        View selectedTab = mContentView.getChildAt(position * 2);
+        int selectedIndex = position * 2;
+
+        View selectedTab = mContentView.getChildAt(selectedIndex);
+
+        if (mTabListener != null) {
+            if (lastSelectedIndex >= 0 && selectedIndex != lastSelectedIndex) mTabListener.onTabUnselected(mTabs.get(lastSelectedIndex), lastSelectedIndex);
+
+            mTabListener.onTabSelected((TabView) selectedTab, position);
+        }
 
         final int width = selectedTab.getMeasuredWidth();
         final int left = selectedTab.getLeft();
@@ -197,5 +225,11 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
     public void onPageScrollStateChanged(int state) {
         if (mPageChangeListener != null)
             mPageChangeListener.onPageScrollStateChanged(state);
+    }
+
+    public interface TabListener {
+        public void onTabSelected(TabView tab, int position);
+        public void onTabReselected(TabView tab, int position);
+        public void onTabUnselected(TabView tab, int position);
     }
 }
