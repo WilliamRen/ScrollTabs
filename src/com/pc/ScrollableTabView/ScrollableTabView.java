@@ -30,6 +30,8 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     private ArrayList<TabView> mTabs;
 
+    private ViewPager.OnPageChangeListener mPageChangeListener;
+
     public ScrollableTabView(Context context) {
         super(context);
         init(context);
@@ -98,6 +100,10 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     public int getSeparatorColor() {
         return mSeparatorColor;
+    }
+
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener pageChangeListener) {
+        mPageChangeListener = pageChangeListener;
     }
 
     private void initTabs() {
@@ -175,16 +181,22 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+        if (mPageChangeListener != null)
+            mPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
     }
 
     @Override
     public void onPageSelected(int position) {
         selectTab(position);
+
+        if (mPageChangeListener != null)
+            mPageChangeListener.onPageSelected(position);
     }
 
 
     @Override
     public void onPageScrollStateChanged(int state) {
+        if (mPageChangeListener != null)
+            mPageChangeListener.onPageScrollStateChanged(state);
     }
 }
