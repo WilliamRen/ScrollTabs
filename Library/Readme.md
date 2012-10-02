@@ -5,7 +5,7 @@ Android tabs for easy implementation and customization. Requires the use of View
 
 ![Screenshot](http://desmond.imageshack.us/Himg338/scaled.php?server=338&filename=scrollsongs.png&res=landing)
 
-Usage
+Usage* 
 ---
 
 1. Set the view tabs as the example on your layout. This must be configured with the `ViewPager`.
