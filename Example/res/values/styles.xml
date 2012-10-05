@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyTabs" parent="Tab">
+        <item name="android:textAppearance">@style/MyTabs.Text</item>
+    </style>
+
+    <style name="MyTabs.Text" parent="Tab.TextAppearance">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+</resources>
