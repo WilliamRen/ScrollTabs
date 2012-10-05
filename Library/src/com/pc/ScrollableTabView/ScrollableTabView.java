@@ -1,6 +1,7 @@
 package com.pc.ScrollableTabView;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -21,13 +22,9 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     private LinearLayout mContentView;
 
-    private int mSeparatorColor;
+    private int mDividerColor;
 
-    private boolean mShowSeparator;
-
-    private int mDividerMarginTop = 12;
-    private int mDividerMarginBottom = 12;
-    private int mDividerWidth = 1;
+    private boolean mShowDivier;
 
     private ArrayList<TabView> mTabs;
 
@@ -35,30 +32,32 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
     private TabListener mTabListener;
 
     public ScrollableTabView(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public ScrollableTabView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public ScrollableTabView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        if (attrs != null) {
+            TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ScrollableTabView, 0, defStyle);
+            mDividerColor = array.getColor(R.styleable.ScrollableTabView_dividerColor, Color.TRANSPARENT);
+            mShowDivier = array.getBoolean(R.styleable.ScrollableTabView_divider, false);
+        }
+
         init(context);
     }
 
     private void init(Context context) {
         mContext = context;
-        mSeparatorColor = Color.BLACK;
 
         setHorizontalFadingEdgeEnabled(false);
         setHorizontalScrollBarEnabled(false);
 
         mContentView = new LinearLayout(context);
-
-        mShowSeparator = true;
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -68,12 +67,6 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
         mContentView.setOrientation(LinearLayout.HORIZONTAL);
 
         addView(mContentView);
-
-        mDividerMarginBottom = (int) (getResources().getDisplayMetrics().density * mDividerMarginBottom);
-        mDividerMarginTop = (int) (getResources().getDisplayMetrics().density * mDividerMarginTop);
-        mDividerWidth = (int) (getResources().getDisplayMetrics().density * mDividerWidth);
-
-        if (mDividerWidth == 0) mDividerWidth = 1;
 
         mTabs = new ArrayList<TabView>();
     }
@@ -96,22 +89,22 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
         return mPager;
     }
 
-    public void setSeparatorColor(int separatorColor) {
-        mSeparatorColor = separatorColor;
+    public void setDividerColor(int dividerColor) {
+        mDividerColor = dividerColor;
         initTabs();
     }
 
-    public int getSeparatorColor() {
-        return mSeparatorColor;
+    public int getDividerColor() {
+        return mDividerColor;
     }
 
-    public void setShowSeparator(boolean showSeparator) {
-        mShowSeparator = showSeparator;
+    public void setShowDivider(boolean showDivider) {
+        mShowDivier = showDivider;
         initTabs();
     }
 
     public boolean isShowingSeparator() {
-        return mShowSeparator;
+        return mShowDivier;
     }
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener pageChangeListener) {
@@ -146,6 +139,7 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
             final int index = i;
 
             TabView tab = mTabAdapter.getView(i, inflater);
+            tab.setDividerColor(mShowDivier && i > 0 ? mDividerColor : Color.TRANSPARENT);
             tab.setText(mTabAdapter.getTitle(i).toUpperCase());
 
             mContentView.addView(tab);
@@ -153,8 +147,6 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
             tab.setFocusable(true);
 
             mTabs.add(tab);
-
-            if (mShowSeparator == true && i != mPager.getAdapter().getCount() - 1) mContentView.addView(getSeparator());
 
             tab.setOnClickListener(new OnClickListener() {
                 @Override
@@ -172,36 +164,20 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
         selectTab(mPager.getCurrentItem());
     }
 
-    private View getSeparator() {
-        View separator = new View(mContext);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                mDividerWidth, LinearLayout.LayoutParams.MATCH_PARENT);
-        params.setMargins(0, mDividerMarginTop, 0, mDividerMarginBottom);
-
-        separator.setLayoutParams(params);
-
-        separator.setBackgroundColor(mSeparatorColor);
-
-        return separator;
-    }
-
     private void selectTab(int position) {
         int lastSelectedIndex = -1;
-        int factor = mShowSeparator == true ? 2 : 1;
-        for (int i = 0, pos = 0; i < mContentView.getChildCount(); i += factor, pos++) {
+        for (int i = 0; i < mContentView.getChildCount(); i++) {
             View tab = mContentView.getChildAt(i);
-            if (tab.isSelected() == true)
-                lastSelectedIndex = pos;
-            tab.setSelected(pos == position);
+            if (tab.isSelected())
+                lastSelectedIndex = i;
+            tab.setSelected(i == position);
         }
 
-        int selectedIndex = position * factor;
-
-        View selectedTab = mContentView.getChildAt(selectedIndex);
+        View selectedTab = mContentView.getChildAt(position);
 
         if (mTabListener != null) {
-            if (lastSelectedIndex >= 0 && selectedIndex != lastSelectedIndex) mTabListener.onTabUnselected(mTabs.get(lastSelectedIndex), lastSelectedIndex);
+            if (lastSelectedIndex >= 0 && position != lastSelectedIndex)
+                mTabListener.onTabUnselected(mTabs.get(lastSelectedIndex), lastSelectedIndex);
 
             mTabListener.onTabSelected((TabView) selectedTab, position);
         }

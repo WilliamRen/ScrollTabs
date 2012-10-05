@@ -1,9 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="ScrollTabs">
-
-        <attr name="pcScrollTabStyle" format="reference" />
-
+    <declare-styleable name="ScrollableTabView">
+        <attr name="dividerColor" format="color" />
+        <attr name="divider" format="boolean" />
     </declare-styleable>
 
 </resources>

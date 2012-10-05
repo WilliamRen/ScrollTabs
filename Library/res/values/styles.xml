@@ -1,13 +1,6 @@
 <resources>
 
-    <style name="Theme.ScrollTabDefault" parent="android:Theme">
-
-        <item name="pcScrollTabStyle">@style/Tab</item>
-
-    </style>
-
     <style name="Tab">
-
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/tab_height</item>
         <item name="android:background">@drawable/tab_background</item>
@@ -19,15 +12,12 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:selectAllOnFocus">false</item>
         <item name="android:textAppearance">@style/Tab.TextAppearance</item>
-
     </style>
 
     <style name="Tab.TextAppearance">
-
         <item name="android:textColor">@color/tab_text</item>
         <item name="android:textSize">@dimen/text_size_micro</item>
         <item name="android:textStyle">bold</item>
-
     </style>
 
 </resources>
