@@ -3,9 +3,11 @@ Scroll Tabs
 
 Android tabs for easy implementation and customization. Requires the use of ViewPager.
 
-![Screenshot](http://desmond.imageshack.us/Himg338/scaled.php?server=338&filename=scrollsongs.png&res=landing)
+***
+![img](Images/ScrollTabs.png)
+***
 
-Usage* 
+Usage
 ---
 
 1. Set the view tabs as the example on your layout. This must be configured with the `ViewPager`.
@@ -20,13 +22,14 @@ Usage*
 		ScrollableTabView scrollableTabView = (ScrollableTabView)
 		findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new MyPagerAdapter(this));
-        scrollableTabView.setTabAdapter(new MyTabAdapter(this));
+        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        scrollableTabView.setTabAdapter(new MyTabAdapter());
         scrollableTabView.setViewPager(pager);
         
-3. If you need, you can listen to page view changes notification:
+3. If you need, you can listen to page view and tab changes notification:
 
-		scrollableTabView.setOnPageChangeListener(mPageChangeListener);
+		scrollableTabView.setOnPageChangeListener(this);
+		scrollableTabView.setTabListener(this);
 		
 Theming
 ---
@@ -37,6 +40,7 @@ Theming
 	        <item name="android:textAppearance">@style/MyTextAppearance</item>
         </style>
         <style name="MyTextAppearance" parent="Tab.TextAppearance">
+        	<item name="android:textSize">22sp</item>
         	<item name="android:textColor">@color/my_textcolor</item>
         </style>
         
