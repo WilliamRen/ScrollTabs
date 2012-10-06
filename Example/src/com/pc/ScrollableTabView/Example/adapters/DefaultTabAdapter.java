@@ -1,17 +1,19 @@
-package com.pc.ScrollableTabView.Example;
+package com.pc.ScrollableTabView.Example.adapters;
 
 import android.view.LayoutInflater;
+import com.pc.ScrollableTabView.R;
 import com.pc.ScrollableTabView.TabAdapter;
 import com.pc.ScrollableTabView.TabView;
 
 /**
  * Created by Pietro Caselani
  */
-public class MyTabAdapter extends TabAdapter {
+public class DefaultTabAdapter extends TabAdapter {
 
     @Override
     public TabView getView(int position, LayoutInflater inflater) {
-        return (TabView) inflater.inflate(R.layout.mytab, null);
+        TabView tabView = (TabView) inflater.inflate(R.layout.default_tab, null);
+        return tabView;
     }
 
     @Override

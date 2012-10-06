@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
@@ -13,10 +14,6 @@ import android.widget.TextView;
  */
 public class TabView extends TextView {
     private int mDividerColor;
-
-    public TabView(Context context) {
-        super(context);
-    }
 
     public TabView(Context context, AttributeSet attrs) {
         super(context, attrs);

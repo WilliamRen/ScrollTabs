@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="holo_blue_light">#33B5E5</color>
+    <color name="holo_blue">#0099CC</color>
+
+    <color name="holo_purple_light">#AA66CC</color>
+    <color name="holo_purple">#9933CC</color>
+
+    <color name="holo_green_light">#99CC00</color>
+    <color name="holo_green">#669900</color>
+
+    <color name="holo_orange_light">#FFBB33</color>
+    <color name="holo_orange">#FF8800</color>
+
+    <color name="holo_red_light">#FF4444</color>
+    <color name="holo_red">#CC0000</color>
+
+    <!--
+    Overwrite this colors to change text colors of tabs
+
+    <color name="unselected_tab_text_color">@color/holo_green</color>
+    <color name="selected_tab_text_color">@color/holo_green_light</color>
+
+    -->
+
+</resources>

@@ -44,8 +44,9 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
         if (attrs != null) {
             TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ScrollableTabView, 0, defStyle);
-            mDividerColor = array.getColor(R.styleable.ScrollableTabView_dividerColor, Color.TRANSPARENT);
+            mDividerColor = array.getColor(R.styleable.ScrollableTabView_dividerColor, Color.WHITE);
             mShowDivier = array.getBoolean(R.styleable.ScrollableTabView_divider, false);
+            array.recycle();
         }
 
         init(context);
@@ -91,7 +92,9 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     public void setDividerColor(int dividerColor) {
         mDividerColor = dividerColor;
-        initTabs();
+
+        for (TabView tab : mTabs.subList(1, mTabs.size()))
+            tab.setDividerColor(mShowDivier ? mDividerColor : Color.TRANSPARENT);
     }
 
     public int getDividerColor() {
@@ -100,7 +103,9 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
 
     public void setShowDivider(boolean showDivider) {
         mShowDivier = showDivider;
-        initTabs();
+
+        for (TabView tab : mTabs.subList(1, mTabs.size()))
+            tab.setDividerColor(showDivider ? mDividerColor : Color.TRANSPARENT);
     }
 
     public boolean isShowingSeparator() {
@@ -123,6 +128,14 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
         return mTabListener;
     }
 
+    public TabView getSelectedTabView() {
+        return mTabs.get(mPager.getCurrentItem());
+    }
+
+    public int getSelectedIndex() {
+        return mPager.getCurrentItem();
+    }
+
     private void initTabs() {
         if (mPager == null || mTabAdapter == null) return;
 
@@ -132,8 +145,6 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
         mTabs.clear();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
-
-        if (mTabAdapter == null) return;
 
         for (int i = 0; i < mPager.getAdapter().getCount(); i++) {
             final int index = i;
@@ -182,8 +193,14 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
             mTabListener.onTabSelected((TabView) selectedTab, position);
         }
 
-        final int width = selectedTab.getMeasuredWidth();
-        final int left = selectedTab.getLeft();
+        scrollToTab(position);
+    }
+
+    private void scrollToTab(int index) {
+        View tab = mContentView.getChildAt(index);
+
+        final int width = tab.getMeasuredWidth();
+        final int left = tab.getLeft();
 
         final int x = left - getWidth() / 2 + width / 2;
 
@@ -193,6 +210,11 @@ public class ScrollableTabView extends HorizontalScrollView implements ViewPager
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+
+        if (mPager == null)
+            throw new IllegalStateException("viewPager can't be null.");
+        if (mTabAdapter == null)
+            throw new IllegalStateException("tab adapter can't be null.");
 
         if (changed) selectTab(mPager.getCurrentItem());
     }

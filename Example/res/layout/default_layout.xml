@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tabs="http://schemas.android.com/apk/res/com.pc.ScrollableTabView.Example"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-        >
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <include layout="@layout/header" />
     <com.pc.ScrollableTabView.ScrollableTabView
-        android:id="@+id/tabs"
+        android:id="@+id/scrollTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-            />
+        />
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 </LinearLayout>
-

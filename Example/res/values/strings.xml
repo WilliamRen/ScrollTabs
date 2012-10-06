@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Example</string>
+
+    <string name="default_tab">Default</string>
+    <string name="xml">xml</string>
+    <string name="custom_text">Custom text</string>
+    <string name="custom_background">Custom background</string>
+    <string name="change_divider_color">Change divider color</string>
+    <string name="change_divider_visibility">Change divider visibility</string>
+
 </resources>

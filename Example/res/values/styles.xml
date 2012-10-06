@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="MyTabs" parent="Tab">
+    <style name="MyTabsCustomText" parent="Tab">
         <item name="android:textAppearance">@style/MyTabs.Text</item>
     </style>
 
     <style name="MyTabs.Text" parent="Tab.TextAppearance">
         <item name="android:textSize">22sp</item>
+
+        <!-- To set text color -->
+        <item name="android:textColor">@color/my_tab_text</item>
+        <!--
+        Or just overwrite the colors:
+        <color name="unselected_tab_text_color">YOUR CUSTOM UNSELECTED COLOR</color>
+        <color name="selected_tab_text_color">YOUR CUSTOM SELECTED COLOR</color>
+         -->
+
+    </style>
+
+    <style name="MyTabsCustomBG" parent="Tab">
+        <item name="android:background">@drawable/tab_indicator_ab_example</item>
     </style>
 
 </resources>

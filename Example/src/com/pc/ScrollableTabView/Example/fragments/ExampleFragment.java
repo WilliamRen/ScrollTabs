@@ -1,4 +1,4 @@
-package com.pc.ScrollableTabView.Example;
+package com.pc.ScrollableTabView.Example.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +10,11 @@ import android.widget.TextView;
 /**
  * Created by Pietro Caselani
  */
-public class MyFragment extends Fragment {
+public class ExampleFragment extends Fragment {
     private static final String POSITION_KEY = "PositionKey";
 
-    public static MyFragment newInstance(int position) {
-        MyFragment fragment = new MyFragment();
+    public static ExampleFragment newInstance(int position) {
+        ExampleFragment fragment = new ExampleFragment();
 
         Bundle args = new Bundle();
         args.putInt(POSITION_KEY, position);
