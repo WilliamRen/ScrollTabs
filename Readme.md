@@ -4,7 +4,7 @@ Scroll Tabs
 Android tabs for easy implementation and customization. Requires the use of ViewPager.
 
 ***
-![img](Images/ScrollTabs.png)
+![img](https://github.com/pietrocaselani/ScrollTabs/blob/Example/Images/ScrollTabs.png?raw=true)
 ***
 
 Usage
